@@ -1,8 +1,5 @@
 package com.infosys.employee.controller;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,13 +57,11 @@ public class EmployeeController {
         return ResponseEntity.ok(updatedEmployee);        
 	}
 	@DeleteMapping("/delete/{employeeId}")
-	public Map<String, Boolean> deleteEmployee(@PathVariable long employeeId) throws EmployeeNotFoundException{
+	public ResponseEntity <Employee> deleteEmployee(@PathVariable long employeeId) throws EmployeeNotFoundException{
 		Employee employee = employeeRepository.findById(employeeId)
 	            .orElseThrow(() -> new EmployeeNotFoundException("Employee not found for this id : " + employeeId));
-		 employeeRepository.delete(employee);
-	     Map<String, Boolean> response = new HashMap<>();
-	     response.put("deleted", Boolean.TRUE);
-	     return response;
+		 employeeRepository.deleteById(employeeId);
+		 return ResponseEntity.ok().build();
 	}
 
 }
